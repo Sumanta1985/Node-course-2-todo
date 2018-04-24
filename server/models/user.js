@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-var User=mongoose.model('user1',{
+var User=mongoose.model('users',{
   name:{
     type:String,
   },
