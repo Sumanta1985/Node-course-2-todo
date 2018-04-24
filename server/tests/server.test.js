@@ -3,9 +3,15 @@ const request=require("supertest");
 
 const {app}=require("./../server");
 const {Todo}=require("./../models/todo");
+const {ObjectId}=require("mongodb");
 
 // beforeEach((done)=>{
-//   Todo.remove({}).then(()=>done());
+//   Todo.remove({}).then(()=>{
+//     // return Todo.insertMany(todos);
+//     done();
+//   }).then(()=>{
+//     done();
+//   });
 // });
 
 // describe('POST /todo',()=>{
@@ -48,5 +54,15 @@ describe('GET /todo',()=>{
       })
       .end(done);
 
+  });
+});
+
+describe('GET /todo/:id',()=>{
+  var _id=new ObjectId();
+  it('should validate id,if not able to find then send 404',(done)=>{
+    request(app)
+      .get(`/todos/${_id.toHexString()}`)
+      .expect(404)
+      .end(done);
   });
 });
