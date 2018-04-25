@@ -66,3 +66,13 @@ describe('GET /todo/:id',()=>{
       .end(done);
   });
 });
+
+describe('DELETE /todo/:id',()=>{
+  var _id=new ObjectId();
+  it('should be able to delete from DB,if not able to find then send 404',(done)=>{
+    request(app)
+      .delete(`/todos/${_id.toHexString()}`)
+      .expect(404)
+      .end(done);
+  });
+});

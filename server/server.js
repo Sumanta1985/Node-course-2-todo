@@ -79,7 +79,19 @@ app.get('/todos/:id/:text/:completedAt',(req,res)=>{
     }
     res.send(todo);
   }).catch((err)=>{
-    res.status()
+    res.send();
+  });
+});
+
+app.delete('/todos/:id',(req,res)=>{
+  var id=req.params.id;
+  Todo.findByIdAndRemove(id).then((todo)=>{
+    if(!todo){
+      return res.status(404).send();
+    }
+    res.send(todo);
+  }).catch((err)=>{
+    res.status(400).send(err);
   });
 });
 
