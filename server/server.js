@@ -31,7 +31,7 @@ app.post('/users',(req,res)=>{
     email:req.body.email
   });
 
-  todo.save().then((doc)=>{
+  user.save().then((doc)=>{
     res.send(doc);
   },(e)=>{
     res.status(400).send(e);
