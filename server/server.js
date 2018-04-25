@@ -25,30 +25,19 @@ app.post('/todos',(req,res)=>{
   });
 });
 
-// app.post('/users',(req,res)=>{
-//   var user = new User({
-//     text:req.body.text
-//   });
-//
-//   todo.save().then((doc)=>{
-//     res.send(doc);
-//   },(e)=>{
-//     res.status(400).send(e);
-//   });
-// });
+app.post('/users',(req,res)=>{
+  var user = new User({
+    name:req.body.name,
+    email:req.body.email
+  });
 
+  todo.save().then((doc)=>{
+    res.send(doc);
+  },(e)=>{
+    res.status(400).send(e);
+  });
+});
 
-// app.post('/todos',(req,res)=>{
-//   var todo = new Todo({
-//     text:req.body.text
-//   });
-//
-//   todo.save().then((doc)=>{
-//     res.send(doc);
-//   },(e)=>{
-//     res.send(e);
-//   });
-// });
 
 app.get('/todos',(req,res)=>{
   // todo.find().then((todos)=>{    //Doesn't work
