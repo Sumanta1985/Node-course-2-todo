@@ -74,5 +74,27 @@ describe('DELETE /todo/:id',()=>{
       .delete(`/todos/${_id.toHexString()}`)
       .expect(404)
       .end(done);
+// below not working with with expect version
+      // .end((err,res)=>{
+      //   if (err){
+      //     return done(err);
+      //   }
+      //   Todo.findById(_id).then((todo)=>{
+      //     expect(todo).toNotExist();
+      //     done();
+      //   }).catch((e)=>{
+      //     done(e);
+      //   });
+      // });
+  });
+});
+
+describe('PATCH /todo/:id',()=>{
+  var _id=new ObjectId();
+  it('should be able to update DB,if not able to find then send 404',(done)=>{
+    request(app)
+      .patch(`/todos/${_id.toHexString()}`)
+      .expect(404)
+      .end(done);
   });
 });
