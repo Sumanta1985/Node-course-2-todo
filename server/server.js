@@ -1,4 +1,6 @@
+require('./config/config.js');
 //const mongoose= require('mongoose');
+
 const {ObjectId}=require('mongodb');
 const express=require('express');
 const bodyParser=require('body-parser');
@@ -8,7 +10,9 @@ const {mongoose}=require('./db/mongoose.js');
 const {User}=require('./models/user.js');
 //const Todo=require('./models/todo.js').Todo;
 const {Todo}=require('./models/todo.js');
-const port=process.env.PORT || 3000;
+
+
+const port=process.env.PORT;
 
 var app=express();
 
