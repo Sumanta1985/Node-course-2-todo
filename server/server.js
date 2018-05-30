@@ -31,14 +31,17 @@ app.post('/todos',(req,res)=>{
 });
 
 app.post('/users',(req,res)=>{
-  var user = new User({
-    name:req.body.name,
-    email:req.body.email
-  });
-
-  user.save().then((doc)=>{
-    res.send(doc);
-  },(e)=>{
+  var body=_.pick(req.body,['name','email','password']);
+  var user = new User(body);
+  console.log("user",user);
+  user.save().then(()=>{
+    //token and has of passowrd
+    //res.send(doc);
+    return user.generateAuthToken();
+  }).then((token)=>{
+    res.header('x-auth',token).send(user);
+  }).catch((e)=>{
+    console.log('error',e);
     res.status(400).send(e);
   });
 });
