@@ -1,7 +1,7 @@
 require('./config/config.js');
 //const mongoose= require('mongoose');
 
-const {ObjectId}=require('mongodb');
+//const {ObjectId}=require('mongodb');
 const express=require('express');
 const bodyParser=require('body-parser');
 const _=require('lodash');
@@ -10,6 +10,7 @@ const {mongoose}=require('./db/mongoose.js');
 const {User}=require('./models/user.js');
 //const Todo=require('./models/todo.js').Todo;
 const {Todo}=require('./models/todo.js');
+const {authenticate}=require('./middleware/middleware.js');
 
 
 const port=process.env.PORT;
@@ -46,6 +47,9 @@ app.post('/users',(req,res)=>{
   });
 });
 
+app.get('/users/me',authenticate,(req,res)=>{
+  res.send(req.user);
+});
 
 app.get('/todos',(req,res)=>{
   // todo.find().then((todos)=>{    //Doesn't work

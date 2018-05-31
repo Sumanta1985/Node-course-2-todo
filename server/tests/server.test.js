@@ -49,7 +49,7 @@ describe('GET /todo',()=>{
       .get('/todos')
       .expect(200)
       .expect((res)=>{
-        console.log("res.body",res.body);
+//        console.log("res.body",res.body);
         expect(res.body.todos[7].text).toBe(text);
       })
       .end(done);
