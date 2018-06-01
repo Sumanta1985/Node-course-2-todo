@@ -12,7 +12,6 @@ const {User}=require('./models/user.js');
 const {Todo}=require('./models/todo.js');
 const {authenticate}=require('./middleware/middleware.js');
 
-
 const port=process.env.PORT;
 
 var app=express();
@@ -29,26 +28,6 @@ app.post('/todos',(req,res)=>{
   },(e)=>{
     res.status(400).send(e);
   });
-});
-
-app.post('/users',(req,res)=>{
-  var body=_.pick(req.body,['name','email','password']);
-  var user = new User(body);
-  console.log("user",user);
-  user.save().then(()=>{
-    //token and has of passowrd
-    //res.send(doc);
-    return user.generateAuthToken();
-  }).then((token)=>{
-    res.header('x-auth',token).send(user);
-  }).catch((e)=>{
-    console.log('error',e);
-    res.status(400).send(e);
-  });
-});
-
-app.get('/users/me',authenticate,(req,res)=>{
-  res.send(req.user);
 });
 
 app.get('/todos',(req,res)=>{
@@ -123,6 +102,26 @@ app.patch('/todos/:id',(req,res)=>{
     }
     res.send(todo);
   }).catch((e)=>{res.status(400).send(e)});
+});
+
+app.post('/users',(req,res)=>{
+  var body=_.pick(req.body,['name','email','password']);
+  var user = new User(body);
+  console.log("user",user);
+  user.save().then(()=>{
+    //token and has of passowrd
+    //res.send(doc);
+    return user.generateAuthToken();
+  }).then((token)=>{
+    res.header('x-auth',token).send(user);
+  }).catch((e)=>{
+    console.log('error',e);
+    res.status(400).send(e);
+  });
+});
+
+app.get('/users/me',authenticate,(req,res)=>{
+  res.send(req.user);
 });
 
 app.listen(port,()=>{

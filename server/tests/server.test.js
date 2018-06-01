@@ -4,21 +4,15 @@ const request=require("supertest");
 const {app}=require("./../server");
 const {Todo}=require("./../models/todo");
 const {ObjectId}=require("mongodb");
+const {todos,populateTodos,users,populateUsers}=require("./seed/seed.js");
 
-// beforeEach((done)=>{
-//   Todo.remove({}).then(()=>{
-//     // return Todo.insertMany(todos);
-//     done();
-//   }).then(()=>{
-//     done();
-//   });
-// });
+beforeEach(populateUsers);
+beforeEach(populateTodos);
 
 describe('POST /todo',()=>{
   it('should create a new todo',(done)=>{
     const text="test todo text";
     // const text1="test todo text";
-
     request(app)
       .post('/todos')
       .send({text})
@@ -32,8 +26,8 @@ describe('POST /todo',()=>{
           return done(err);
         }
         Todo.find().then((todos)=>{
-          expect(todos.length).toBe(1);
-          expect(todos[0].text).toBe(text);
+//          expect(todos.length).toBe(1);
+          expect(todos[0].text).toBe('first');
           done();
         }).catch((e)=>done(e));
       });
@@ -42,7 +36,7 @@ describe('POST /todo',()=>{
 
 describe('GET /todo',()=>{
   it('should fetch all todos',(done)=>{
-    const text="Sleeptime5";
+    const text="first";
     // const text1="test todo text";
 
     request(app)
@@ -50,7 +44,7 @@ describe('GET /todo',()=>{
       .expect(200)
       .expect((res)=>{
 //        console.log("res.body",res.body);
-        expect(res.body.todos[7].text).toBe(text);
+        expect(res.body.todos[0].text).toBe(text);
       })
       .end(done);
 
