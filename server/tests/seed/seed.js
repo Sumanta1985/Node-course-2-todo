@@ -3,6 +3,8 @@ const {User}=require("./../../models/user");
 const {ObjectId}=require("mongodb");
 const jwt=require('jsonwebtoken');
 
+const JWT_secret=process.env.JWT_secret;
+
 var todooneId=new ObjectId();
 var todotwoId=new ObjectId();
 var useroneId=new ObjectId();
@@ -27,7 +29,7 @@ const users=[{
   password:'123abc',
   tokens:[{
     access:'auth',
-    token:jwt.sign({id: useroneId.toHexString(),access:'auth'},'secret123').toString()
+    token:jwt.sign({id: useroneId.toHexString(),access:'auth'},JWT_secret).toString()
   }]
 },{
   id: usertwoId,
@@ -36,7 +38,7 @@ const users=[{
   password:'123abcd'
   // tokens:[{
   //   access:'auth',
-  //   token:jwt.sign({id: usertwoId.toHexString(),access:'auth'},'secret123').toString();
+  //   token:jwt.sign({id: usertwoId.toHexString(),access:'auth'},JWT_secret).toString();
   // }]
 }];
 
