@@ -12,7 +12,7 @@ const {User}=require('./models/user.js');
 const {Todo}=require('./models/todo.js');
 const {authenticate}=require('./middleware/middleware.js');
 
-const PORT=process.env.PORT;
+const port=process.env.PORT;
 
 var app=express();
 
@@ -150,8 +150,8 @@ app.delete('/users/me/token',authenticate,(req,res)=>{
   });
 });
 
-app.listen(PORT,()=>{
-  console.log(`Started on port ${PORT}`);
+app.listen(port,()=>{
+  console.log(`Started on port ${port}`);
 });
 
 module.exports={app};

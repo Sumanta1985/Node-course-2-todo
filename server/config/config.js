@@ -8,7 +8,7 @@ const env=process.env.NODE_ENV || 'developement';
 //   process.env.MONGODB_URI='mongodb://localhost:27017/todoapptest';
 // }
 
-if (env === 'developement' || env==="test"){
+if (env === 'developement' || env==='test'){
   var config= require('./config.json');
   var envconfig=config[env];
 
