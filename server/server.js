@@ -18,9 +18,10 @@ var app=express();
 
 app.use(bodyParser.json());
 
-app.post('/todos',(req,res)=>{
+app.post('/todos',authenticate,(req,res)=>{
   var todo = new Todo({
-    text:req.body.text
+    text:req.body.text,
+    _creator:req.user._id
   });
 
   todo.save().then((doc)=>{
@@ -31,7 +32,7 @@ app.post('/todos',(req,res)=>{
 });
 
 app.get('/todos',(req,res)=>{
-  // todo.find().then((todos)=>{    //Doesn't work
+  // todo.find().then((todos)=>{    //Doesn't work because find() is a model function.
   // todo1.find().then((odos)=>{   //Doesn't work
   Todo.find().then((todos)=>{
     res.send({
@@ -74,9 +75,11 @@ app.get('/todos/:id/:text/:completedAt',(req,res)=>{
   });
 });
 
-app.delete('/todos/:id',(req,res)=>{
-  var id=req.params.id;
-  Todo.findByIdAndRemove(id).then((todo)=>{
+app.delete('/todos/:id',authenticate,(req,res)=>{
+  var _id=req.params.id;
+  var _creator=req.user._id;
+  // Todo.findByIdAndRemove(id).then((todo)=>{
+  Todo.findOneAndRemove({_id,_creator}).then((todo)=>{
     if(!todo){
       return res.status(404).send();
     }
@@ -86,8 +89,9 @@ app.delete('/todos/:id',(req,res)=>{
   });
 });
 
-app.patch('/todos/:id',(req,res)=>{
-  const id=req.params.id;
+app.patch('/todos/:id',authenticate,(req,res)=>{
+  const _id=req.params.id;
+  var _creator=req.user._id;
   const body =_.pick(req.body,['text','completed']);
   console.log("body",req.body);
   if (_.isBoolean(body.completed) && body.completed){
@@ -96,7 +100,8 @@ app.patch('/todos/:id',(req,res)=>{
     body.completed=false;
     body.completedAt=null;
   }
-  Todo.findByIdAndUpdate(id,{$set:body},{new: true}).then((todo)=>{
+//  Todo.findByIdAndUpdate(id,{$set:body},{new: true}).then((todo)=>{
+  Todo.findByIdAndUpdate({_id,_creator},{$set:body},{new: true}).then((todo)=>{
     if (!todo){
       return res.status(404).send();
     }

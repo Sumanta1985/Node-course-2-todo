@@ -3,8 +3,22 @@ const {User}=require("./../../models/user");
 const {ObjectId}=require("mongodb");
 const jwt=require('jsonwebtoken');
 
+var todooneId=new ObjectId();
+var todotwoId=new ObjectId();
 var useroneId=new ObjectId();
 var usertwoId=new ObjectId();
+
+const todos=[{
+  _id: todooneId,
+  text: 'first',
+  _creator:useroneId
+},{
+  _id: todotwoId,
+  text: 'second',
+  completed: true,
+  completedAt: 222,
+  _creator:usertwoId
+}];
 
 const users=[{
   _id: useroneId,
@@ -22,18 +36,8 @@ const users=[{
   password:'123abcd'
   // tokens:[{
   //   access:'auth',
-  //   token:jwt.sign({id: useroneId.toHexString(),access:'auth'},'secret123').toString();
+  //   token:jwt.sign({id: usertwoId.toHexString(),access:'auth'},'secret123').toString();
   // }]
-}];
-
-const todos=[{
-  _id: new ObjectId(),
-  text: 'first'
-},{
-  _id: new ObjectId(),
-  text: 'second',
-  completed: true,
-  completedAt: 222
 }];
 
 var populateTodos=(done)=>{
@@ -47,7 +51,7 @@ var populateTodos=(done)=>{
 
 var populateUsers=(done)=>{
   User.remove({}).then(()=>{
-    var userOne = new User(users[0]).save();
+    var userOne = new User(users[0]).save();  //to call 'pre' middleware
     // .then(()=>{
     //   return
     // });

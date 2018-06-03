@@ -16,6 +16,7 @@ describe('POST /todo',()=>{
     request(app)
       .post('/todos')
       .send({text})
+      .set('x-auth',users[0].tokens[0].token)
       .expect(200)
       .expect((res)=>{
         expect(res.body.text).toBe(text);
@@ -63,10 +64,11 @@ describe('GET /todo/:id',()=>{
 
 describe('DELETE /todo/:id',()=>{
   var _id=new ObjectId();
-  it('should be able to delete from DB,if not able to find then send 404',(done)=>{
+  it('should delete todo',(done)=>{
     request(app)
-      .delete(`/todos/${_id.toHexString()}`)
-      .expect(404)
+      .delete(`/todos/${todos[0]._id}`)
+      .set('x-auth',users[0].tokens[0].token)
+      .expect(200)
       .end(done);
 // below not working with with expect version
       // .end((err,res)=>{
@@ -81,11 +83,34 @@ describe('DELETE /todo/:id',()=>{
       //   });
       // });
   });
+  it('should send 404',(done)=>{
+    request(app)
+      .delete(`/todos/${_id.toHexString()}`)
+      .expect(404)
+      .end(done);
+  });
 });
 
 describe('PATCH /todo/:id',()=>{
   var _id=new ObjectId();
-  it('should be able to update DB,if not able to find then send 404',(done)=>{
+  var text="This should be new text";
+
+  it('should update todo',(done)=>{
+    request(app)
+      .patch(`/todos/${todos[0]._id}`)
+      .set('x-auth',users[0].tokens[0].token)
+      .send({
+        completed: true,
+        text
+      })
+      .expect(200)
+      .expect((res)=>{
+        expect(res.body.text).toBe(text);
+      })
+      .end(done);
+  });
+
+  it('should send 404',(done)=>{
     request(app)
       .patch(`/todos/${_id.toHexString()}`)
       .expect(404)
