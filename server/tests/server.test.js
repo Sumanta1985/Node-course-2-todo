@@ -106,6 +106,7 @@ describe('PATCH /todo/:id',()=>{
       .expect(200)
       .expect((res)=>{
         expect(res.body.text).toBe(text);
+        expect(res.body.completed).toBe(true);
       })
       .end(done);
   });
